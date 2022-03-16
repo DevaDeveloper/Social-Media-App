@@ -1,0 +1,53 @@
+.loginHolder {
+  font-family: 'Poppins', sans-serif;
+  background-image: url(../../background-login.png);
+  background-size: cover;
+  background-position: center;
+  padding: 0 80px;
+  height: 100vh;
+  .loginLogoImg {
+    padding-top: 30px;
+  }
+  h1 {
+    color: #fff;
+    font-size: 3.2rem;
+  }
+  span {
+    color: green;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 470px;
+  }
+  div {
+    width: 100%;
+    color: #fff;
+    // margin: 10px 0;
+  }
+
+  button {
+    width: 100%;
+    color: #fff;
+    background-color: #00b960;
+    padding: 16px 20px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: ease 0.4s all;
+
+    &:hover {
+      background-color: #089b54;
+    }
+  }
+  .forgotPass {
+    cursor: pointer;
+    text-align: right;
+
+    &:hover {
+      color: rgb(237, 219, 219);
+    }
+  }
+}

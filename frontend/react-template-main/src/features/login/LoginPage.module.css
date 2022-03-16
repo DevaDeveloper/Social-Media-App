@@ -1,0 +1,65 @@
+.loginHolder {
+  font-family: 'Poppins', sans-serif;
+  background-image: url(../../background-login.png);
+  background-size: cover;
+  background-position: center;
+  padding: 0 80px;
+  height: 100vh;
+}
+
+.loginHolder .loginLogoImg {
+  padding-top: 30px;
+}
+
+.loginHolder h1 {
+  color: #fff;
+  font-size: 3.2rem;
+}
+
+.loginHolder span {
+  color: green;
+}
+
+.loginHolder form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 470px;
+}
+
+.loginHolder div {
+  width: 100%;
+  color: #fff;
+}
+
+.loginHolder button {
+  width: 100%;
+  color: #fff;
+  background-color: #00b960;
+  padding: 16px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 0;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+}
+
+.loginHolder button:hover {
+  background-color: #089b54;
+}
+
+.loginHolder .forgotPass {
+  cursor: pointer;
+  text-align: right;
+}
+
+.loginHolder .forgotPass:hover {
+  color: #eddbdb;
+}
+/*# sourceMappingURL=LoginPage.module.css.map */

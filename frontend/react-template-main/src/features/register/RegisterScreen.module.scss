@@ -1,0 +1,74 @@
+.registerHolder {
+  padding: 30px 80px;
+  font-family: 'Poppins', sans-serif;
+  background-image: url(../../background-login.png);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+
+  h1 {
+    color: #fff;
+    font-size: 3.2rem;
+    margin: 0;
+  }
+  span {
+    color: #00b960;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 470px;
+  }
+  div {
+    width: 100%;
+    color: #fff;
+  }
+
+  button {
+    width: 100%;
+    color: white;
+    background-color: #00b960;
+    padding: 16px 20px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: ease 0.4s all;
+
+    &:hover {
+      background-color: #08a459;
+    }
+  }
+  .registerNames {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    div {
+      flex: 0 0 47%;
+    }
+  }
+  .dates {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #fff;
+    padding: 15px 0;
+  }
+  .radios {
+    display: flex;
+    flex-direction: row;
+  }
+  hr {
+    width: 100%;
+    border-bottom: 1px solid #00b960;
+  }
+  .logAcc {
+    text-align: center;
+    span {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+}

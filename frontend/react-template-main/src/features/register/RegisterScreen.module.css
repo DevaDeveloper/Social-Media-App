@@ -1,0 +1,108 @@
+.registerHolder {
+  padding: 30px 80px;
+  font-family: 'Poppins', sans-serif;
+  background-image: url(../../background-login.png);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+.registerHolder h1 {
+  color: #fff;
+  font-size: 3.2rem;
+  margin: 0;
+}
+
+.registerHolder span {
+  color: #00b960;
+}
+
+.registerHolder form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 470px;
+}
+
+.registerHolder div {
+  width: 100%;
+  color: #fff;
+}
+
+.registerHolder button {
+  width: 100%;
+  color: white;
+  background-color: #00b960;
+  padding: 16px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 0;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+}
+
+.registerHolder button:hover {
+  background-color: #08a459;
+}
+
+.registerHolder .registerNames {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.registerHolder .registerNames div {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 47%;
+          flex: 0 0 47%;
+}
+
+.registerHolder .dates {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-bottom: 1px solid #fff;
+  padding: 15px 0;
+}
+
+.registerHolder .radios {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.registerHolder hr {
+  width: 100%;
+  border-bottom: 1px solid #00b960;
+}
+
+.registerHolder .logAcc {
+  text-align: center;
+}
+
+.registerHolder .logAcc span {
+  margin-left: 10px;
+  cursor: pointer;
+}
+/*# sourceMappingURL=RegisterScreen.module.css.map */

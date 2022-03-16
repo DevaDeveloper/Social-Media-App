@@ -1,0 +1,61 @@
+nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 5px 100px;
+  border-bottom: 1px solid gray;
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+nav .navBtns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+nav .navBtns button:first-child {
+  background: #00b960;
+  border-radius: 32px;
+  border: none;
+  color: #fff;
+  padding: 10px 14px;
+  cursor: pointer;
+  margin-right: 10px;
+  -webkit-transition: ease 0.5s all;
+  transition: ease 0.5s all;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+nav .navBtns button:first-child:hover {
+  background-color: #04a255;
+}
+
+nav .navBtns button:nth-child(2) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 32px;
+}
+
+nav .navBtns button:nth-child(2):hover {
+  background-color: #fceeee;
+}
+/*# sourceMappingURL=Navbar.module.css.map */

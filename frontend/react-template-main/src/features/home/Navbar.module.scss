@@ -1,0 +1,40 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 100px;
+  border-bottom: 1px solid gray;
+  position: sticky;
+
+  .navBtns {
+    display: flex;
+    button:first-child {
+      background: #00b960;
+      border-radius: 32px;
+      border: none;
+      color: #fff;
+      padding: 10px 14px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: ease 0.5s all;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: #04a255;
+      }
+    }
+    button:nth-child(2) {
+      display: flex;
+      align-items: center;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 32px;
+
+      &:hover {
+        background-color: rgb(252, 238, 238);
+      }
+    }
+  }
+}
