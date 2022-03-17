@@ -6,6 +6,7 @@ import {
   LOGIN_PATH,
   REGISTER_PATH,
   USER_POSTS,
+  NEW_POST,
 } from './path-constants';
 import CounterScreen from '../features/counter/CounterScreen';
 import PostPage from '../pages/PostsPage/PostPage';
@@ -14,6 +15,7 @@ import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import LoginPage from '../pages/LoginPage/Login';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import AllUserPostsPage from '../pages/AllUserPostsPage/AllUserPostsPage';
+import NewPostPage from '../pages/NewPostPage/NewPostPage';
 
 interface IPathComponent {
   path?: string;
@@ -28,6 +30,7 @@ pathComponentArray.push({ path: HOME_PATH, component: HomePage });
 pathComponentArray.push({ path: LOGIN_PATH, component: LoginPage });
 pathComponentArray.push({ path: REGISTER_PATH, component: RegisterPage });
 pathComponentArray.push({ path: USER_POSTS, component: AllUserPostsPage });
+pathComponentArray.push({ path: NEW_POST, component: NewPostPage });
 
 pathComponentArray.push({ component: NotFoundPage });
 

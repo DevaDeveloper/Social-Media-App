@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import styles from './LoginPage.module.scss';
 import Logo from '../../assets/logo.png';
@@ -18,6 +19,7 @@ const allInputLabelColors = {
 };
 
 const LoginPage: React.FC = () => {
+  const history = useHistory();
   const dispatch = useAppDispatch();
   const stateUsername = useAppSelector((state) => state.login.username);
   const statePassword = useAppSelector((state) => state.login.password);
@@ -30,6 +32,9 @@ const LoginPage: React.FC = () => {
       console.log(stateUsername, statePassword);
       dispatch(clearInputs());
     }
+  };
+  const handleRegisterAccount = () => {
+    history.push('/register');
   };
 
   return (
@@ -83,6 +88,14 @@ const LoginPage: React.FC = () => {
             </div>
             <button type="submit">Log in</button>
             <hr style={{ width: '100%' }} />
+            <div className={styles.registerAcc}>
+              <p>
+                Do not have an account?
+                <button type="button" onClick={handleRegisterAccount}>
+                  Register!
+                </button>
+              </p>
+            </div>
           </form>
         </div>
       </div>

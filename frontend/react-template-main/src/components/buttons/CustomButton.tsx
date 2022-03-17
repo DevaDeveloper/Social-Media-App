@@ -16,7 +16,7 @@ const MyButton = styled(Button, {
 }));
 
 export const CustomButton = ({ onClick, children }: any) => (
-  <MyButton onClick={onClick} myColor="#334993">
+  <MyButton onClick={onClick} myColor="#fff">
     {children}
   </MyButton>
 );

@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { TextField, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { signupUser } from './RegisterService';
 import styles from './RegisterScreen.module.scss';
 import Logo from '../../assets/logo.png';
 import {
@@ -21,7 +23,15 @@ const allInputLabelColors = {
 };
 
 const RegisterScreen: FC = () => {
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [confirmErrorMessage] = useState<string>('Passwords do not match!');
+  const [errorMessages] = useState<string>(`Password must 
+      contain at least 8 characters
+      one uppercase letter, lowercase letter, special character,
+      shorter than 20 characters!`);
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const stateFirstName = useAppSelector((state) => state.register.firstName);
   const stateLastName = useAppSelector((state) => state.register.lastName);
   const stateUserName = useAppSelector((state) => state.register.userName);
@@ -35,17 +45,29 @@ const RegisterScreen: FC = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(
-      stateFirstName,
-      stateLastName,
-      stateUserName,
-      stateEmail,
-      statePassword,
-      stateConfirmPassword,
-      stateDate,
-      stateRole,
-    );
-    dispatch(clearForm());
+    setPasswordError(false);
+    setConfirmPasswordError(false);
+
+    if (statePassword !== stateConfirmPassword) {
+      setConfirmPasswordError(true);
+    } else if (statePassword.length < 8 || statePassword.length > 20) {
+      setPasswordError(true);
+    } else {
+      signupUser({
+        firstName: stateFirstName,
+        lastName: stateLastName,
+        username: stateUserName,
+        email: stateEmail,
+        dateOfBirth: stateDate,
+        userType: stateRole,
+        password: statePassword,
+      });
+      dispatch(clearForm());
+    }
+  };
+
+  const handleHasAccountLogin = () => {
+    history.push('/login');
   };
 
   return (
@@ -143,6 +165,8 @@ const RegisterScreen: FC = () => {
             InputLabelProps={allInputLabelColors}
             onChange={(e) => dispatch(registerPassword(e.target.value))}
             required
+            error={passwordError}
+            helperText={passwordError ? errorMessages : ''}
             sx={{
               borderBottom: '1px solid #fff',
               width: '100%',
@@ -159,7 +183,9 @@ const RegisterScreen: FC = () => {
             InputLabelProps={allInputLabelColors}
             onChange={(e) => dispatch(registerConfirmPassword(e.target.value))}
             required
+            error={confirmPasswordError}
             sx={{ borderBottom: '1px solid #fff' }}
+            helperText={confirmPasswordError ? confirmErrorMessage : ''}
           />
           <div className={styles.dates}>
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -179,11 +205,11 @@ const RegisterScreen: FC = () => {
           >
             <FormControlLabel
               control={<Radio />}
-              value="user"
+              value="USER"
               label="User"
               className={styles.userRadio}
             />
-            <FormControlLabel control={<Radio />} value="admin" label="Admin" />
+            <FormControlLabel control={<Radio />} value="ADMIN" label="Admin" />
           </RadioGroup>
 
           <button type="submit">Log in</button>
@@ -191,7 +217,9 @@ const RegisterScreen: FC = () => {
           <div className={styles.logAcc}>
             <p>
               Already have account?
-              <span>Login!</span>
+              <button type="button" onClick={handleHasAccountLogin}>
+                Login!
+              </button>
             </p>
           </div>
         </form>

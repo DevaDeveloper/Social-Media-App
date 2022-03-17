@@ -4,7 +4,6 @@
   background-image: url(../../background-login.png);
   background-size: cover;
   background-position: center;
-  height: 100vh;
 }
 
 .registerHolder h1 {
@@ -101,8 +100,10 @@
   text-align: center;
 }
 
-.registerHolder .logAcc span {
+.registerHolder .logAcc button {
   margin-left: 10px;
+  display: inline;
+  max-width: 120px;
   cursor: pointer;
 }
 /*# sourceMappingURL=RegisterScreen.module.css.map */

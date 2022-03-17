@@ -4,7 +4,6 @@
   background-image: url(../../background-login.png);
   background-size: cover;
   background-position: center;
-  height: 100vh;
 
   h1 {
     color: #fff;
@@ -66,8 +65,10 @@
   }
   .logAcc {
     text-align: center;
-    span {
+    button {
       margin-left: 10px;
+      display: inline;
+      max-width: 120px;
       cursor: pointer;
     }
   }

@@ -50,4 +50,14 @@
       color: rgb(237, 219, 219);
     }
   }
+  .registerAcc {
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    text-align: center;
+    button {
+      max-width: 120px;
+      margin-left: 10px;
+    }
+  }
 }

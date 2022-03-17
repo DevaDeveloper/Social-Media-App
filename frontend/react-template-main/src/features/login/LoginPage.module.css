@@ -62,4 +62,13 @@
 .loginHolder .forgotPass:hover {
   color: #eddbdb;
 }
+
+.loginHolder .registerAcc {
+  text-align: center;
+}
+
+.loginHolder .registerAcc button {
+  max-width: 120px;
+  margin-left: 10px;
+}
 /*# sourceMappingURL=LoginPage.module.css.map */

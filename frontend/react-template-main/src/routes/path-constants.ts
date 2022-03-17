@@ -4,3 +4,4 @@ export const POSTS_PATH = '/posts';
 export const LOGIN_PATH = '/login';
 export const REGISTER_PATH = '/register';
 export const USER_POSTS = '/user-posts';
+export const NEW_POST = '/new-post';
