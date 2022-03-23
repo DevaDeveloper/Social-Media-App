@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { TextField, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import { signupUser } from './RegisterService';
 import styles from './RegisterScreen.module.scss';
 import Logo from '../../assets/logo.png';
 import {
@@ -15,6 +14,7 @@ import {
   registerDate,
   registerRole,
   clearForm,
+  signUpAsync,
 } from './registerSlice';
 
 // label colors
@@ -23,15 +23,22 @@ const allInputLabelColors = {
 };
 
 const RegisterScreen: FC = () => {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
+  // Handle SIGNUP validation
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [emailError, setEmailError] = useState<boolean>(false);
+
   const [confirmErrorMessage] = useState<string>('Passwords do not match!');
   const [errorMessages] = useState<string>(`Password must 
       contain at least 8 characters
       one uppercase letter, lowercase letter, special character,
       shorter than 20 characters!`);
-  const dispatch = useAppDispatch();
-  const history = useHistory();
+  const [emailErrorMessage] = useState<string>('Not a valid email!');
+
+  // State from Slice
   const stateFirstName = useAppSelector((state) => state.register.firstName);
   const stateLastName = useAppSelector((state) => state.register.lastName);
   const stateUserName = useAppSelector((state) => state.register.userName);
@@ -42,34 +49,44 @@ const RegisterScreen: FC = () => {
     (state) => state.register.confirmPassword,
   );
   const stateRole = useAppSelector((state) => state.register.role);
+  const users = useAppSelector((state) => state.register.users);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setPasswordError(false);
     setConfirmPasswordError(false);
 
     if (statePassword !== stateConfirmPassword) {
       setConfirmPasswordError(true);
-    } else if (statePassword.length < 8 || statePassword.length > 20) {
+    } else if (
+      // eslint-disable-next-line operator-linebreak
+      statePassword.trim().length < 8 ||
+      statePassword.trim().length > 20
+    ) {
       setPasswordError(true);
+    } else if (stateEmail.includes('.') === false) {
+      setEmailError(true);
     } else {
-      signupUser({
-        firstName: stateFirstName,
-        lastName: stateLastName,
-        username: stateUserName,
-        email: stateEmail,
-        dateOfBirth: stateDate,
-        userType: stateRole,
-        password: statePassword,
-      });
+      await dispatch(
+        signUpAsync({
+          firstName: stateFirstName,
+          lastName: stateLastName,
+          username: stateUserName,
+          email: stateEmail,
+          dateOfBirth: stateDate,
+          userType: stateRole,
+          password: statePassword,
+        }),
+      );
       dispatch(clearForm());
     }
   };
 
+  // Redirect to Login page if user has no account
   const handleHasAccountLogin = () => {
     history.push('/login');
   };
-
+  console.log(users);
   return (
     <div className={styles.registerHolder}>
       <div className={styles.loginLogoImg}>
@@ -85,6 +102,7 @@ const RegisterScreen: FC = () => {
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className={styles.registerNames}>
             <div className={styles.usernameLoginInput}>
+              {/* FIRST NAME INPUT */}
               <TextField
                 placeholder="First Name"
                 id="firstname_input"
@@ -103,6 +121,7 @@ const RegisterScreen: FC = () => {
               />
             </div>
             <div className={styles.passwordLoginInput}>
+              {/* LAST NAME INPUT */}
               <TextField
                 placeholder="Last Name"
                 id="lastname_input"
@@ -121,6 +140,8 @@ const RegisterScreen: FC = () => {
               />
             </div>
           </div>
+
+          {/* USERNAME INPUT */}
           <TextField
             placeholder="Username"
             id="username_input"
@@ -138,6 +159,8 @@ const RegisterScreen: FC = () => {
               margin: '5px 0',
             }}
           />
+
+          {/* EMAIL */}
           <TextField
             placeholder="E-mail"
             id="email_input"
@@ -149,12 +172,15 @@ const RegisterScreen: FC = () => {
             InputLabelProps={allInputLabelColors}
             onChange={(e) => dispatch(registerEmail(e.target.value))}
             required
+            error={emailError}
+            helperText={emailError ? emailErrorMessage : ''}
             sx={{
               borderBottom: '1px solid #fff',
               width: '100%',
               margin: '5px 0',
             }}
           />
+          {/* PASSWORD INPUT */}
           <TextField
             placeholder="Password"
             id="password_input"
@@ -173,6 +199,8 @@ const RegisterScreen: FC = () => {
               margin: '5px 0',
             }}
           />
+
+          {/* CONFIRM PASSWORD */}
           <TextField
             placeholder="Confirm Password"
             id="confirm_input"
@@ -187,6 +215,8 @@ const RegisterScreen: FC = () => {
             sx={{ borderBottom: '1px solid #fff' }}
             helperText={confirmPasswordError ? confirmErrorMessage : ''}
           />
+
+          {/* DATE OF BIRTH INPUT */}
           <div className={styles.dates}>
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="date">Date of birth</label>
@@ -199,6 +229,8 @@ const RegisterScreen: FC = () => {
               required
             />
           </div>
+
+          {/* SECELT ADMIN OR USER INPUT */}
           <RadioGroup
             className={styles.radios}
             onChange={(e) => dispatch(registerRole(e.target.value))}
@@ -214,6 +246,7 @@ const RegisterScreen: FC = () => {
 
           <button type="submit">Log in</button>
           <hr />
+
           <div className={styles.logAcc}>
             <p>
               Already have account?

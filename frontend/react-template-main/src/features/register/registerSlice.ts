@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { signupUser } from './RegisterService';
 
 interface InitialState {
   firstName: string;
@@ -9,6 +10,7 @@ interface InitialState {
   role: string;
   confirmPassword: string;
   date: string;
+  users: object[];
 }
 
 const initialState: InitialState = {
@@ -20,7 +22,13 @@ const initialState: InitialState = {
   confirmPassword: '',
   role: '',
   date: '2022-03-14',
+  users: [],
 };
+
+export const signUpAsync = createAsyncThunk(
+  'register/signUpAsync',
+  async (obj: object) => signupUser(obj),
+);
 
 const registerSlice = createSlice({
   name: 'register',
@@ -50,6 +58,9 @@ const registerSlice = createSlice({
     registerDate: (state, action: PayloadAction<string>) => {
       state.date = action.payload;
     },
+    pushUser: (state, action) => {
+      state.users.push(action.payload);
+    },
     clearForm: (state) => {
       state.firstName = '';
       state.lastName = '';
@@ -60,6 +71,11 @@ const registerSlice = createSlice({
       state.role = '';
       state.date = '';
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(signUpAsync.fulfilled, (state, action) => {
+      state.users.push(action.payload);
+    });
   },
 });
 export const {
@@ -72,5 +88,6 @@ export const {
   registerRole,
   registerDate,
   clearForm,
+  pushUser,
 } = registerSlice.actions;
 export default registerSlice.reducer;

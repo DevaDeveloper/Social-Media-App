@@ -1,13 +1,31 @@
 interface UserPosts {
-  //   id: string;
+  id: string;
   username: string;
-  accessibilityTag: string;
-  typeTag: string;
-  date: string;
+  accessibility: string;
+  type: string;
+  createdAt: string;
   description: string;
-  upvotes: number;
+  idUser: string;
+  likescount: string;
+  location: string;
   downvotes: number;
   comments: number;
 }
-export type { UserPosts };
+
+interface PostId {
+  id: string;
+  // username: string;
+  accessibility: string;
+  type: string;
+  createdAt: string;
+  description: string;
+  idUser: string;
+  likescount: string;
+  location: string;
+  downvotes: number;
+  comments: number;
+  // updatedAt: string
+}
+
+export type { UserPosts, PostId };
 export default {};

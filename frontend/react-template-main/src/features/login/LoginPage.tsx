@@ -4,14 +4,14 @@ import TextField from '@mui/material/TextField';
 import styles from './LoginPage.module.scss';
 import Logo from '../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getPassword, getUsername, clearInputs } from './loginSlice';
-// import { makeStyles } from '@mui/material';
-
-// const useStyles = makeStyles({
-//   inputs: {
-//     color: 'white',
-//   },
-// });
+import {
+  getPassword,
+  getUsername,
+  clearInputs,
+  userLoginAndTokens,
+  // userTokens,
+} from './loginSlice';
+// import { loginUser } from './LoginService';
 
 // components needs style refactoring(mui..)
 const allInputLabelColors = {
@@ -24,13 +24,21 @@ const LoginPage: React.FC = () => {
   const stateUsername = useAppSelector((state) => state.login.username);
   const statePassword = useAppSelector((state) => state.login.password);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (stateUsername.trim().length === 0 || statePassword.trim().length < 8) {
       console.error('username or password too short');
     } else {
-      console.log(stateUsername, statePassword);
-      dispatch(clearInputs());
+      const response = await dispatch(
+        userLoginAndTokens({
+          email: stateUsername,
+          password: statePassword,
+        }),
+      );
+      if (response) {
+        history.push('./user-posts');
+        dispatch(clearInputs());
+      }
     }
   };
   const handleRegisterAccount = () => {

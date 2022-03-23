@@ -1,0 +1,106 @@
+.container {
+  max-width: 908px;
+  font-family: 'Poppins', sans-serif;
+  margin: 20px auto;
+}
+
+.container .userProfileHeader {
+  position: relative;
+  text-align: center;
+}
+
+.container .userProfileHeader img:nth-child(2) {
+  position: absolute;
+  top: 210px;
+  left: 120px;
+  width: 188px;
+  height: 188px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+}
+
+.container .userProfileHeader .usernamesOutter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container .userProfileHeader .usernamesOutter .usernameInner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.container .userInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 50px 0;
+}
+
+.container .userInfo article {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 48%;
+          flex: 0 0 48%;
+  padding: 10px 30px;
+  background: #ffffff;
+  -webkit-box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+          box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 16px;
+}
+
+.container .userInfo .infos {
+  max-height: 190px;
+}
+
+.container .userInfo .infos div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container .userInfo .userActions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  min-height: 190px;
+}
+
+.container .userInfo .userActions div {
+  text-align: center;
+  color: #00b960;
+}
+
+.container .userInfo .userActions div span {
+  font-size: 22px;
+  font-weight: 600;
+}
+/*# sourceMappingURL=userProfile.module.css.map */

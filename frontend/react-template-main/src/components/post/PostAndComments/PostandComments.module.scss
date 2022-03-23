@@ -1,0 +1,100 @@
+.pageHolder {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+
+  .imgHolder {
+    position: relative;
+    flex: 0 0 65%;
+    article {
+      margin: 20px 0;
+      span {
+        background: #ffffff;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+        border-radius: 16px;
+        padding: 10px;
+        margin: 0 5px;
+      }
+    }
+
+    //like dislike comment under image
+    .interactions {
+      position: absolute;
+      width: 100%;
+      top: 602px;
+      backdrop-filter: blur(40px);
+      background: gray;
+      opacity: 0.8;
+      display: flex;
+      justify-content: space-between;
+      max-width: 844px;
+      padding: 10px 0;
+      border-radius: 0px 0px 16px 16px;
+      span {
+        margin: 0 50px;
+      }
+    }
+  }
+
+  //comment holder
+  .commentsHolder {
+    flex: 0 0 20%;
+    padding: 20px;
+    min-width: 414px;
+    background: #ffffff;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.16);
+    .mainInfo {
+      display: flex;
+    }
+    .commentInteractions {
+      background: #ffffff;
+      box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+      border-radius: 16px;
+      padding: 12px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .publishComment {
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 1px;
+      }
+      button {
+        position: absolute;
+        top: 72%;
+        left: 72%;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        background: #00b960;
+        border-radius: 100px;
+        color: #fff;
+        padding: 12px 16px;
+        border: none;
+
+        &:hover {
+          background: #05b05d;
+        }
+      }
+    }
+    //Published comments
+    .publishedComments {
+      border: 1px solid #eaeaf5;
+      box-sizing: border-box;
+      border-radius: 16px;
+      margin: 10px 0;
+      article {
+        margin: 20px 10px;
+        display: flex;
+      }
+      p {
+        text-align: center;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+    }
+  }
+}

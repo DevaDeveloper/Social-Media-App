@@ -1,0 +1,12 @@
+.btnPublish {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  border-radius: 100px;
+  cursor: pointer;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 10px 0;
+}
+/*# sourceMappingURL=AddPostButton.module.css.map */

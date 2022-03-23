@@ -1,58 +1,67 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import Navbar from './Navbar';
 import Post from '../../components/post/Post';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  fetchAllPosts,
+  getLikeWithId,
+  fetchLikeWithId,
+} from './homeScreenSlice';
 
-const DUMMY_POSTS = [
-  {
-    id: 1,
-    username: '@john.brown12',
-    postDate: new Date().toString(),
-    accessibilityTag: 'By car',
-    typeTag: 'Picnic',
-    description: 'description about this post',
-    upvotes: 120,
-    downvotes: 10,
-    comments: 17,
-  },
-  {
-    id: 2,
-    username: '@nick.bitcoin12',
-    postDate: new Date().toString(),
-    accessibilityTag: 'By bike',
-    typeTag: 'IDK type',
-    description: 'description about second post',
-    upvotes: 56,
-    downvotes: 7,
-    comments: 30,
-  },
-  {
-    id: 3,
-    username: '@john.brown12',
-    postDate: new Date().toString(),
-    accessibilityTag: 'By car',
-    typeTag: 'Picnic',
-    description: 'description about this post',
-    upvotes: 120,
-    downvotes: 10,
-    comments: 17,
-  },
-];
 const HomeScreen: FC = () => {
-  const [userPosts] = useState(DUMMY_POSTS);
+  const userPosts = useAppSelector((state) => state.userPosts.postsList);
+  const token = useAppSelector((state) => state.login.token);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      const response = await dispatch(fetchAllPosts(token));
+      console.log(response);
+    };
+    //  get /like /post /id testing
+    const fetchLike = async () => {
+      const response = await dispatch(
+        getLikeWithId({
+          postId: '27011a78-fe98-427b-a892-20098d2e22a4',
+          token,
+        }),
+      );
+      console.log(response);
+    };
+    //  get / like/id testing
+    const fetchLikeIdId = async () => {
+      const response = await dispatch(
+        fetchLikeWithId({
+          postId: 'c2987f78-849f-485b-b034-6801c8efc5e5',
+          token,
+        }),
+      );
+      console.log(response);
+    };
+
+    fetchAll();
+    fetchLike();
+    fetchLikeIdId();
+
+    console.log(token);
+  }, []);
+
   return (
     <div>
       <Navbar />
+
       <ul>
         {userPosts.map((post) => (
           <Post
-            // id={post.id.toString()}
+            id={post.id}
             key={post.id}
             username={post.username}
-            date={post.postDate}
-            accessibilityTag={post.accessibilityTag}
-            typeTag={post.typeTag}
+            date={post.createdAt}
+            location={post.location}
+            accessibilityTag={post.accessibility}
+            typeTag={post.type}
             description={post.description}
-            upvotes={post.upvotes}
+            upvotes={post.likescount}
             downvotes={post.downvotes}
             comments={post.comments}
           />
