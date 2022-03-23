@@ -119,7 +119,6 @@ const homeScreenSlice = createSlice({
     });
     builder.addCase(fetchOnePost.fulfilled, (state, action) => {
       state.postWithId = action.payload;
-      console.log(state.postWithId);
     });
 
     // builder.addCase(postLike.pending, (state) => {
@@ -135,9 +134,8 @@ const homeScreenSlice = createSlice({
     builder.addCase(getLikeWithId.pending, (state) => {
       state.status = 'pending';
     });
-    builder.addCase(getLikeWithId.fulfilled, (state, action) => {
+    builder.addCase(getLikeWithId.fulfilled, (state) => {
       state.status = 'finished';
-      console.log(action.payload);
     });
     builder.addCase(getLikeWithId.rejected, (state) => {
       state.status = 'rejected';
@@ -147,9 +145,8 @@ const homeScreenSlice = createSlice({
     builder.addCase(fetchLikeWithId.pending, (state) => {
       state.status = 'pending';
     });
-    builder.addCase(fetchLikeWithId.fulfilled, (state, action) => {
+    builder.addCase(fetchLikeWithId.fulfilled, (state) => {
       state.status = 'finished';
-      console.log(action.payload);
     });
     builder.addCase(fetchLikeWithId.rejected, (state) => {
       state.status = 'rejected';

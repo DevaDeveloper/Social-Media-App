@@ -4,10 +4,11 @@ import BaseService from '../../services/common/BaseService';
 
 const baseService = new BaseService();
 
-const PostLike = async (data = {}, token: string, query = {}) => {
+// post /comment
+const postComment = async (data = {}, token: string, query = {}) => {
   const queryString = baseService.qs.stringify(query);
   // @ts-ignore
-  const path = baseService.url.build('/like');
+  const path = baseService.url.build('/comment');
   const url = BaseService.combine(path, queryString);
   try {
     const response: AxiosResponse = await baseService.post(url, data, {
@@ -20,10 +21,11 @@ const PostLike = async (data = {}, token: string, query = {}) => {
   }
 };
 
-const getLikeId = async (postId: string, token: string, query = {}) => {
+// get /comment
+const getComment = async (token: string, query = {}) => {
   const queryString = baseService.qs.stringify(query);
   // @ts-ignore
-  const path = baseService.url.build(`/like/post/${postId}`);
+  const path = baseService.url.build('/comment');
   const url = BaseService.combine(path, queryString);
   try {
     const response: AxiosResponse = await baseService.get(url, {
@@ -36,11 +38,11 @@ const getLikeId = async (postId: string, token: string, query = {}) => {
   }
 };
 
-// like/id
-const fetchLikeId = async (postId: string, token: string, query = {}) => {
+// get /comment/ id
+const getCommentId = async (postId: string, token: string, query = {}) => {
   const queryString = baseService.qs.stringify(query);
   // @ts-ignore
-  const path = baseService.url.build(`/like/${postId}`);
+  const path = baseService.url.build(`/comment${postId}`);
   const url = BaseService.combine(path, queryString);
   try {
     const response: AxiosResponse = await baseService.get(url, {
@@ -53,11 +55,33 @@ const fetchLikeId = async (postId: string, token: string, query = {}) => {
   }
 };
 
-// delete / like/id
-const deleteLike = async (postId: string, token: string, query = {}) => {
+// patch /comment/id
+const patchComment = async (
+  data: {},
+  postId: string,
+  token: string,
+  query = {},
+) => {
   const queryString = baseService.qs.stringify(query);
   // @ts-ignore
-  const path = baseService.url.build(`/like/${postId}`);
+  const path = baseService.url.build(`/comment/${postId}`);
+  const url = BaseService.combine(path, queryString);
+  try {
+    const response: AxiosResponse = await baseService.patch(url, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// delete /comment/id
+const deleteComment = async (postId: string, token: string, query = {}) => {
+  const queryString = baseService.qs.stringify(query);
+  // @ts-ignore
+  const path = baseService.url.build(`/comment/${postId}`);
   const url = BaseService.combine(path, queryString);
   try {
     const response: AxiosResponse = await baseService.delete(url, {
@@ -70,22 +94,5 @@ const deleteLike = async (postId: string, token: string, query = {}) => {
   }
 };
 
-// put like/id
-const putLike = async (data: {}, postId: string, token: string, query = {}) => {
-  const queryString = baseService.qs.stringify(query);
-  // @ts-ignore
-  const path = baseService.url.build(`/like/${postId}`);
-  const url = BaseService.combine(path, queryString);
-  try {
-    const response: AxiosResponse = await baseService.put(url, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    return response.data;
-  } catch (error) {
-    return error.response;
-  }
-};
-
-export { PostLike, getLikeId, fetchLikeId, deleteLike, putLike };
+export { postComment, getComment, getCommentId, patchComment, deleteComment };
 export default {};

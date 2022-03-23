@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDown';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -7,12 +7,16 @@ import Navbar from '../../../features/home/Navbar';
 import styles from './PostandComments.module.scss';
 import ForestImg from '../../../assets/forestpost.png';
 import AvatarImg from '../../../assets/avatar1.png';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { getLikeWithId } from '../../../features/home/homeScreenSlice';
+import { getNewComment, postNewComment } from './PostAndCommentsSlice';
 
 const PostAndComments: FC = () => {
-  const { postWithId, currentPostLikesCount } = useAppSelector(
-    (state) => state.userPosts,
-  );
+  const [countLikes, setCountLikes] = useState(0);
+  const [commentText, setCommentText] = useState<string>('');
+  const token = useAppSelector((state) => state.login.token);
+  const { postWithId } = useAppSelector((state) => state.userPosts);
+  const dispatch = useAppDispatch();
   const {
     accessibility,
     createdAt,
@@ -20,11 +24,41 @@ const PostAndComments: FC = () => {
     type,
     // comments,
     // downvotes,
-    // id,
+    id,
     // idUser,
     // location,
   } = postWithId;
-  console.log(postWithId);
+
+  const commentInput = (e) => {
+    setCommentText(e.target.value);
+  };
+
+  useEffect(() => {
+    //  get /like /post /{id} testing
+    const fetchLike = async () => {
+      const response = await dispatch(
+        getLikeWithId({
+          postId: id,
+          token,
+        }),
+      );
+      setCountLikes(response.payload.count);
+    };
+    const getComments = async () => {
+      const response = await dispatch(getNewComment(token));
+      console.log(response);
+    };
+
+    getComments();
+    fetchLike();
+  }, []);
+
+  const postCommentText = async () => {
+    await dispatch(
+      postNewComment({ obj: { idPost: id, text: commentText }, token }),
+    );
+  };
+
   return (
     <div>
       <Navbar />
@@ -43,17 +77,17 @@ const PostAndComments: FC = () => {
           <div>
             <img src={ForestImg} alt="forest" />
             <div className={styles.interactions}>
-              <span>
+              <span style={{ cursor: 'pointer' }}>
                 <ThumbUpOffAltIcon />
                 {/* {upvotes} */}
-                {currentPostLikesCount}
+                {countLikes}
               </span>
-              <span>
+              <span style={{ cursor: 'pointer' }}>
                 <ThumbDownOffAltIcon />
                 {/* {downvotes} */}
                 10
               </span>
-              <span>
+              <span style={{ cursor: 'pointer' }}>
                 <ChatBubbleIcon />
                 {/* {comments} */}
                 60
@@ -77,7 +111,7 @@ const PostAndComments: FC = () => {
               <span>
                 <ThumbUpOffAltIcon />
                 {/* {upvotes} */}
-                {currentPostLikesCount}
+                {countLikes}
               </span>
               <span>
                 <ThumbDownOffAltIcon />
@@ -100,13 +134,16 @@ const PostAndComments: FC = () => {
               id="outlined-basic"
               variant="outlined"
               placeholder="           Write a comment..."
+              onChange={commentInput}
               sx={{
                 minWidth: '374px',
                 boxSizing: 'border-box',
                 borderRadius: '16px',
               }}
             />
-            <button type="button">Publish</button>
+            <button type="button" onClick={() => postCommentText()}>
+              Publish
+            </button>
           </div>
 
           <div className={styles.publishedComments}>

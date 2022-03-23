@@ -2,11 +2,7 @@ import React, { FC, useEffect } from 'react';
 import Navbar from './Navbar';
 import Post from '../../components/post/Post';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-  fetchAllPosts,
-  getLikeWithId,
-  fetchLikeWithId,
-} from './homeScreenSlice';
+import { fetchAllPosts, fetchLikeWithId } from './homeScreenSlice';
 
 const HomeScreen: FC = () => {
   const userPosts = useAppSelector((state) => state.userPosts.postsList);
@@ -15,35 +11,21 @@ const HomeScreen: FC = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const response = await dispatch(fetchAllPosts(token));
-      console.log(response);
+      await dispatch(fetchAllPosts(token));
     };
-    //  get /like /post /id testing
-    const fetchLike = async () => {
-      const response = await dispatch(
-        getLikeWithId({
-          postId: '27011a78-fe98-427b-a892-20098d2e22a4',
-          token,
-        }),
-      );
-      console.log(response);
-    };
+
     //  get / like/id testing
     const fetchLikeIdId = async () => {
-      const response = await dispatch(
+      await dispatch(
         fetchLikeWithId({
           postId: 'c2987f78-849f-485b-b034-6801c8efc5e5',
           token,
         }),
       );
-      console.log(response);
     };
 
     fetchAll();
-    fetchLike();
     fetchLikeIdId();
-
-    console.log(token);
   }, []);
 
   return (

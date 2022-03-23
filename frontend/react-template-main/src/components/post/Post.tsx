@@ -46,30 +46,24 @@ const Post: FC<CardProps> = ({
 
   const dispatch = useAppDispatch();
   const history = useHistory();
+
   dispatch(getPostLikes(likes));
+
   const token = useAppSelector((state) => state.login.token);
   const handlePostId = async () => {
-    console.log(postId);
     setPostId(id);
-    const response = await dispatch(fetchOnePost({ token, postId }));
-    console.log(postId);
-    console.log(response.payload);
+    await dispatch(fetchOnePost({ token, postId }));
+
     history.push('/user-posts-postid');
   };
 
   // post like
   const handlePostLike = async () => {
-    const response = await dispatch(
-      postLike({ obj: { type: 'UPVOTE', idPost: id }, token }),
-    );
-    console.log(response);
+    await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
   };
   // post dislike
   const handlePostDislike = async () => {
-    const response = await dispatch(
-      postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }),
-    );
-    console.log(response);
+    await dispatch(postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }));
   };
 
   return (
