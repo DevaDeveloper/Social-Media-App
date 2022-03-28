@@ -1,0 +1,20 @@
+.adminPanelHolder {
+  font-family: 'Poppins', sans-serif;
+
+  header {
+    display: flex;
+    align-items: center;
+  }
+}
+.btnBlock {
+  background: transparent;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  color: #161616;
+  transition: ease 0.4s all;
+
+  &:hover {
+    color: rgb(255, 247, 247) 6;
+  }
+}

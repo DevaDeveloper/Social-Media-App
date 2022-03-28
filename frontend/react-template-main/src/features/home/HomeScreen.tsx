@@ -1,11 +1,13 @@
 import React, { FC, useEffect } from 'react';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import Navbar from './Navbar';
 import Post from '../../components/post/Post';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchAllPosts, fetchLikeWithId } from './homeScreenSlice';
+import { fetchAllPosts } from './homeScreenSlice';
 
 const HomeScreen: FC = () => {
   const userPosts = useAppSelector((state) => state.userPosts.postsList);
+  const status = useAppSelector((state) => state.userPosts.status);
   const token = useAppSelector((state) => state.login.token);
   const dispatch = useAppDispatch();
 
@@ -14,28 +16,44 @@ const HomeScreen: FC = () => {
       await dispatch(fetchAllPosts(token));
     };
 
-    //  get / like/id testing
-    const fetchLikeIdId = async () => {
-      await dispatch(
-        fetchLikeWithId({
-          postId: 'c2987f78-849f-485b-b034-6801c8efc5e5',
-          token,
-        }),
-      );
-    };
-
     fetchAll();
-    fetchLikeIdId();
   }, []);
 
   return (
     <div>
       <Navbar />
+      {status === 'pending' && (
+        <h1
+          style={{
+            color: '#00B960',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          LOADING DATA...
+          <HourglassEmptyIcon sx={{ fontSize: '2.8rem' }} />
+        </h1>
+      )}
 
+      {status === 'rejected' && (
+        <h1
+          style={{
+            color: 'red',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          ERROR: COULD NOT LOAD DATA...
+          <HourglassEmptyIcon sx={{ fontSize: '2.5rem', color: 'red' }} />
+        </h1>
+      )}
       <ul>
         {userPosts.map((post) => (
           <Post
             id={post.id}
+            idUser={post.idUser}
             key={post.id}
             username={post.username}
             date={post.createdAt}

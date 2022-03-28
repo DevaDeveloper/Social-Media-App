@@ -9,6 +9,7 @@ import {
   NEW_POST,
   USER_PROFILE,
   POST_ID,
+  ADMIN,
 } from './path-constants';
 import CounterScreen from '../features/counter/CounterScreen';
 import PostPage from '../pages/PostsPage/PostPage';
@@ -20,6 +21,7 @@ import AllUserPostsPage from '../pages/AllUserPostsPage/AllUserPostsPage';
 import NewPostPage from '../pages/NewPostPage/NewPostPage';
 import UserProfilePage from '../pages/UserProfilePage/UserProfilePage';
 import PostPageId from '../pages/PostPageId/PostPageId';
+import AdminScreen from '../pages/AdminPage/AdminPage';
 
 interface IPathComponent {
   path?: string;
@@ -37,6 +39,7 @@ pathComponentArray.push({ path: USER_POSTS, component: AllUserPostsPage });
 pathComponentArray.push({ path: NEW_POST, component: NewPostPage });
 pathComponentArray.push({ path: USER_PROFILE, component: UserProfilePage });
 pathComponentArray.push({ path: POST_ID, component: PostPageId });
+pathComponentArray.push({ path: ADMIN, component: AdminScreen });
 
 pathComponentArray.push({ component: NotFoundPage });
 

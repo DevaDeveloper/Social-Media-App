@@ -6,6 +6,7 @@ import loginReducer from '../features/login/loginSlice';
 import registerReducer from '../features/register/registerSlice';
 import userPostsReducer from '../features/home/homeScreenSlice';
 import newPostReducer from '../features/newPost/newPostSlice';
+import adminReducer from '../features/admin/AdminSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     register: registerReducer,
     userPosts: userPostsReducer,
     newPost: newPostReducer,
+    admin: adminReducer,
   },
 });
 

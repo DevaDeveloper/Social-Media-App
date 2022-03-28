@@ -10,18 +10,13 @@ const loginUser = async (data = {}, query = {}) => {
   // @ts-ignore
   const path = baseService.url.build('/auth/signin');
   const url = BaseService.combine(path, queryString);
-  try {
-    const response: AxiosResponse<TokenModel> = await baseService.post(
-      url,
-      data,
-      {},
-    );
+  const response: AxiosResponse<TokenModel> = await baseService.post(
+    url,
+    data,
+    {},
+  );
 
-    return response.data;
-  } catch (error) {
-    console.log(error.response);
-    return error.response;
-  }
+  return response.data;
 };
 export { loginUser };
 export default {};

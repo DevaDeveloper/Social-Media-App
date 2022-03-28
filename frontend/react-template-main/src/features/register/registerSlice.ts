@@ -11,6 +11,8 @@ interface InitialState {
   confirmPassword: string;
   date: string;
   users: object[];
+  loading: string;
+  errMessage: string;
 }
 
 const initialState: InitialState = {
@@ -23,6 +25,8 @@ const initialState: InitialState = {
   role: '',
   date: '2022-03-14',
   users: [],
+  loading: '',
+  errMessage: '',
 };
 
 export const signUpAsync = createAsyncThunk(
@@ -71,10 +75,18 @@ const registerSlice = createSlice({
       state.role = '';
       state.date = '';
     },
+    clearLoadingState: (state) => {
+      state.loading = '';
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signUpAsync.fulfilled, (state, action) => {
       state.users.push(action.payload);
+      state.loading = 'fulfilled';
+    });
+    builder.addCase(signUpAsync.rejected, (state, { error }) => {
+      state.loading = 'rejected';
+      state.errMessage = error.message;
     });
   },
 });
@@ -89,5 +101,6 @@ export const {
   registerDate,
   clearForm,
   pushUser,
+  clearLoadingState,
 } = registerSlice.actions;
 export default registerSlice.reducer;

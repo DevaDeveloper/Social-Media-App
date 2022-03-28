@@ -8,17 +8,12 @@ const getPostId = async (token: string, postId: string, query = {}) => {
   // @ts-ignore
   const path = baseService.url.build(`/post/${postId}`);
   const url = BaseService.combine(path, queryString);
-  try {
-    const response: AxiosResponse = await baseService.get(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    return response.data;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error.response);
-    return error.response;
-  }
+  const response: AxiosResponse = await baseService.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
 };
 export { getPostId };
 export default {};

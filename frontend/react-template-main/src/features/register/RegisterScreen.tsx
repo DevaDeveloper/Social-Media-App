@@ -1,6 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 import { TextField, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import styles from './RegisterScreen.module.scss';
 import Logo from '../../assets/logo.png';
@@ -15,6 +18,7 @@ import {
   registerRole,
   clearForm,
   signUpAsync,
+  clearLoadingState,
 } from './registerSlice';
 
 // label colors
@@ -50,8 +54,14 @@ const RegisterScreen: FC = () => {
   );
   const stateRole = useAppSelector((state) => state.register.role);
   const users = useAppSelector((state) => state.register.users);
+  const { errMessage, loading } = useAppSelector((state) => state.register);
 
-  const handleSubmit = async (e: any) => {
+  useEffect(() => {
+    dispatch(clearForm());
+    dispatch(clearLoadingState());
+  }, []);
+
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     setPasswordError(false);
     setConfirmPasswordError(false);
@@ -67,7 +77,7 @@ const RegisterScreen: FC = () => {
     } else if (stateEmail.includes('.') === false) {
       setEmailError(true);
     } else {
-      await dispatch(
+      dispatch(
         signUpAsync({
           firstName: stateFirstName,
           lastName: stateLastName,
@@ -77,8 +87,10 @@ const RegisterScreen: FC = () => {
           userType: stateRole,
           password: statePassword,
         }),
-      );
-      dispatch(clearForm());
+      )
+        .then(unwrapResult)
+        .then(() => dispatch(clearForm()))
+        .catch((error) => console.error(error));
     }
   };
 
@@ -97,6 +109,37 @@ const RegisterScreen: FC = () => {
           Create new account
           <span>.</span>
         </h1>
+
+        {/* // error handling message */}
+        {loading === 'rejected' && (
+          <h1
+            style={{
+              color: 'red',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2rem',
+            }}
+          >
+            {errMessage}
+            <ErrorIcon sx={{ fontSize: '2.0rem', color: 'red' }} />
+          </h1>
+        )}
+
+        {loading === 'fulfilled' && (
+          <h1
+            style={{
+              color: '#00B960',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2rem',
+            }}
+          >
+            Successefully created account!
+            <CheckCircleIcon sx={{ fontSize: '2.0rem', color: '#00B960' }} />
+          </h1>
+        )}
 
         {/* FORM */}
         <form autoComplete="off" onSubmit={handleSubmit}>

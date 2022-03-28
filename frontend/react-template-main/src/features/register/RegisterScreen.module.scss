@@ -70,6 +70,12 @@
       display: inline;
       max-width: 120px;
       cursor: pointer;
+      background: transparent;
+      transition: ease 0.4s all;
+      color: #00b960;
+      &:hover {
+        color: #fff;
+      }
     }
   }
 }

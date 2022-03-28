@@ -18,7 +18,9 @@ interface InitialState {
   postsList: UserPosts[];
   status: string;
   postWithId: PostId;
+  idUserProfile: string;
   currentPostLikesCount: number;
+  errMessage: string;
 }
 
 const initialState: InitialState = {
@@ -26,6 +28,8 @@ const initialState: InitialState = {
   postsList: [],
   status: '',
   currentPostLikesCount: 0,
+  idUserProfile: '',
+  errMessage: '',
   postWithId: {
     id: '',
     // username: string;
@@ -95,6 +99,11 @@ const homeScreenSlice = createSlice({
   name: 'homescreen',
   initialState,
   reducers: {
+    // set user id
+    setUserId(state, action) {
+      state.idUserProfile = action.payload;
+    },
+
     getAllPosts(state, action) {
       state.postsList = action.payload;
     },
@@ -110,8 +119,9 @@ const homeScreenSlice = createSlice({
       state.status = 'finished';
       state.postsList = action.payload;
     });
-    builder.addCase(fetchAllPosts.rejected, (state) => {
+    builder.addCase(fetchAllPosts.rejected, (state, { error }) => {
       state.status = 'rejected';
+      state.errMessage = error.message;
     });
 
     builder.addCase(fetchOnePost.pending, (state) => {
@@ -119,6 +129,10 @@ const homeScreenSlice = createSlice({
     });
     builder.addCase(fetchOnePost.fulfilled, (state, action) => {
       state.postWithId = action.payload;
+    });
+    builder.addCase(fetchOnePost.rejected, (state, { error }) => {
+      state.status = 'rejected';
+      state.errMessage = error.message;
     });
 
     // builder.addCase(postLike.pending, (state) => {
@@ -163,7 +177,7 @@ const homeScreenSlice = createSlice({
       state.status = 'rejected';
     });
 
-    // put/like
+    // put/like server 500 error
     builder.addCase(putLikeId.pending, (state) => {
       state.status = 'pending';
     });
@@ -176,5 +190,5 @@ const homeScreenSlice = createSlice({
   },
 });
 
-export const { getAllPosts, getPostLikes } = homeScreenSlice.actions;
+export const { getAllPosts, getPostLikes, setUserId } = homeScreenSlice.actions;
 export default homeScreenSlice.reducer;

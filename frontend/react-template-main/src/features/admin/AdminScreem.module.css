@@ -1,0 +1,27 @@
+.adminPanelHolder {
+  font-family: 'Poppins', sans-serif;
+}
+
+.adminPanelHolder header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.btnBlock {
+  background: transparent;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  color: #161616;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+}
+
+.btnBlock:hover {
+  color: #fff7f7 6;
+}
+/*# sourceMappingURL=AdminScreem.module.css.map */

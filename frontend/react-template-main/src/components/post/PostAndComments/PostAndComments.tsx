@@ -8,8 +8,11 @@ import styles from './PostandComments.module.scss';
 import ForestImg from '../../../assets/forestpost.png';
 import AvatarImg from '../../../assets/avatar1.png';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
-import { getLikeWithId } from '../../../features/home/homeScreenSlice';
-import { getNewComment, postNewComment } from './PostAndCommentsSlice';
+import {
+  getLikeWithId,
+  postLike,
+} from '../../../features/home/homeScreenSlice';
+import { getCommentWithId, postNewComment } from './PostAndCommentsSlice';
 
 const PostAndComments: FC = () => {
   const [countLikes, setCountLikes] = useState(0);
@@ -34,6 +37,13 @@ const PostAndComments: FC = () => {
   };
 
   useEffect(() => {
+    fetch('http://localhost:5000/comment', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+
     //  get /like /post /{id} testing
     const fetchLike = async () => {
       const response = await dispatch(
@@ -45,18 +55,31 @@ const PostAndComments: FC = () => {
       setCountLikes(response.payload.count);
     };
     const getComments = async () => {
-      const response = await dispatch(getNewComment(token));
+      const response = await dispatch(getCommentWithId({ postId: id, token }));
       console.log(response);
     };
-
+    console.log(id);
     getComments();
     fetchLike();
-  }, []);
+  }, [countLikes]);
 
   const postCommentText = async () => {
-    await dispatch(
-      postNewComment({ obj: { idPost: id, text: commentText }, token }),
-    );
+    try {
+      await dispatch(
+        postNewComment({ obj: { idPost: id, text: commentText }, token }),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // post like
+  const handlePostLike = async () => {
+    await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
+  };
+  // post dislike
+  const handlePostDislike = async () => {
+    await dispatch(postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }));
   };
 
   return (
@@ -74,20 +97,42 @@ const PostAndComments: FC = () => {
               {type}
             </span>
           </article>
+
+          {/* reactions */}
           <div>
             <img src={ForestImg} alt="forest" />
             <div className={styles.interactions}>
-              <span style={{ cursor: 'pointer' }}>
+              <button
+                type="button"
+                onClick={() => handlePostLike()}
+                style={{
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  border: 'none',
+                }}
+              >
                 <ThumbUpOffAltIcon />
                 {/* {upvotes} */}
                 {countLikes}
-              </span>
-              <span style={{ cursor: 'pointer' }}>
+              </button>
+              <button
+                onClick={() => handlePostDislike()}
+                type="button"
+                style={{
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  border: 'none',
+                }}
+              >
                 <ThumbDownOffAltIcon />
                 {/* {downvotes} */}
                 10
-              </span>
-              <span style={{ cursor: 'pointer' }}>
+              </button>
+              <span
+                style={{
+                  cursor: 'pointer',
+                }}
+              >
                 <ChatBubbleIcon />
                 {/* {comments} */}
                 60
@@ -147,6 +192,7 @@ const PostAndComments: FC = () => {
           </div>
 
           <div className={styles.publishedComments}>
+            {/* TODO - MAKE COMPONENT FOR EACH COMMENT */}
             <div className={styles.oneComment}>
               <article>
                 <img src={AvatarImg} alt="avatar" />

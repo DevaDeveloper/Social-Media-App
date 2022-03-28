@@ -7,3 +7,4 @@ export const USER_POSTS = '/user-posts';
 export const NEW_POST = '/new-post';
 export const USER_PROFILE = '/user-profile';
 export const POST_ID = '/user-posts-postid';
+export const ADMIN = '/admin';

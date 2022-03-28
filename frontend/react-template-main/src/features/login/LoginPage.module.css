@@ -70,5 +70,13 @@
 .loginHolder .registerAcc button {
   max-width: 120px;
   margin-left: 10px;
+  background: transparent;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+  color: #00b960;
+}
+
+.loginHolder .registerAcc button:hover {
+  color: #fff;
 }
 /*# sourceMappingURL=LoginPage.module.css.map */

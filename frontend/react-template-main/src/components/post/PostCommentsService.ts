@@ -10,15 +10,12 @@ const postComment = async (data = {}, token: string, query = {}) => {
   // @ts-ignore
   const path = baseService.url.build('/comment');
   const url = BaseService.combine(path, queryString);
-  try {
-    const response: AxiosResponse = await baseService.post(url, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    return response.data;
-  } catch (error) {
-    return error.response;
-  }
+  const response: AxiosResponse = await baseService.post(url, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
 };
 
 // get /comment
@@ -27,22 +24,19 @@ const getComment = async (token: string, query = {}) => {
   // @ts-ignore
   const path = baseService.url.build('/comment');
   const url = BaseService.combine(path, queryString);
-  try {
-    const response: AxiosResponse = await baseService.get(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    return response.data;
-  } catch (error) {
-    return error.response;
-  }
+  const response: AxiosResponse = await baseService.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
 };
 
 // get /comment/ id
 const getCommentId = async (postId: string, token: string, query = {}) => {
   const queryString = baseService.qs.stringify(query);
   // @ts-ignore
-  const path = baseService.url.build(`/comment${postId}`);
+  const path = baseService.url.build(`/comment/${postId}`);
   const url = BaseService.combine(path, queryString);
   try {
     const response: AxiosResponse = await baseService.get(url, {

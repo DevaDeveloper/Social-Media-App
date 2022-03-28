@@ -1,23 +1,26 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDown';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import Card from 'react-bootstrap/Card';
+import { unwrapResult } from '@reduxjs/toolkit';
 import ForestPost from '../../assets/forestpost.png';
 import Avatar from '../../assets/avatar1.png';
 import styles from './Post.module.scss';
 import {
   fetchOnePost,
-  getPostLikes,
+  // getPostLikes,
   postLike,
+  setUserId,
 } from '../../features/home/homeScreenSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 interface CardProps {
   // eslint-disable-next-line react/no-unused-prop-types
   id: string;
+  idUser: string;
   username: string;
   accessibilityTag: string;
   typeTag: string;
@@ -31,6 +34,7 @@ interface CardProps {
 
 const Post: FC<CardProps> = ({
   id,
+  idUser,
   username,
   accessibilityTag,
   typeTag,
@@ -42,19 +46,22 @@ const Post: FC<CardProps> = ({
   comments,
 }) => {
   const [postId, setPostId] = useState<string>(id);
-  const [likes] = useState(upvotes);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userId] = useState<string>(idUser);
 
   const dispatch = useAppDispatch();
   const history = useHistory();
-
-  dispatch(getPostLikes(likes));
-
   const token = useAppSelector((state) => state.login.token);
-  const handlePostId = async () => {
-    setPostId(id);
-    await dispatch(fetchOnePost({ token, postId }));
+  const errMessage = useAppSelector((state) => state.userPosts.errMessage);
 
-    history.push('/user-posts-postid');
+  useEffect(() => {}, [upvotes]);
+
+  const handlePostId = () => {
+    setPostId(id);
+    dispatch(fetchOnePost({ token, postId }))
+      .then(unwrapResult)
+      .then(() => history.push('/user-posts-postid'))
+      .catch(() => console.error(errMessage));
   };
 
   // post like
@@ -66,20 +73,31 @@ const Post: FC<CardProps> = ({
     await dispatch(postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }));
   };
 
+  // handle avatar img
+  const handleRedirectProfile = async () => {
+    dispatch(setUserId(userId));
+    history.push('/user-profile');
+  };
+
   return (
     <Card
       style={{
         width: '908px',
         margin: '20px auto',
         borderRadius: '32px',
-        cursor: 'pointer',
       }}
     >
       <Card.Body className={styles.postHolder}>
         <div className={styles.postHeader}>
           <Card.Img
             src={Avatar}
-            style={{ margin: '0 15px', width: '100px', height: '100px' }}
+            style={{
+              margin: '0 15px',
+              width: '100px',
+              height: '100px',
+              cursor: 'pointer',
+            }}
+            onClick={() => handleRedirectProfile()}
           />
           <div>
             <div>
@@ -105,7 +123,7 @@ const Post: FC<CardProps> = ({
           src={ForestPost}
           onClick={handlePostId}
           alt="post_image"
-          style={{ margin: '10px auto', maxWidth: '100%' }}
+          style={{ margin: '10px auto', maxWidth: '100%', cursor: 'pointer' }}
         />
         <div className={styles.interactionsHolder}>
           <div className={styles.interactions}>

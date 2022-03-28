@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import { unwrapResult } from '@reduxjs/toolkit';
 import styles from './LoginPage.module.scss';
 import Logo from '../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -11,7 +13,6 @@ import {
   userLoginAndTokens,
   // userTokens,
 } from './loginSlice';
-// import { loginUser } from './LoginService';
 
 // components needs style refactoring(mui..)
 const allInputLabelColors = {
@@ -23,22 +24,30 @@ const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const stateUsername = useAppSelector((state) => state.login.username);
   const statePassword = useAppSelector((state) => state.login.password);
+  const loading = useAppSelector((state) => state.login.loading);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // const errorMessage = useAppSelector((state) => state.login.errMessage);
+
+  const [loginError, setLoginError] = useState<boolean>(false);
+  const [loginErrorMessage] = useState<string>(
+    'Password or username is not valid!',
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (stateUsername.trim().length === 0 || statePassword.trim().length < 8) {
-      console.error('username or password too short');
+      setLoginError(true);
     } else {
-      const response = await dispatch(
+      dispatch(
         userLoginAndTokens({
           email: stateUsername,
           password: statePassword,
         }),
-      );
-      if (response) {
-        history.push('./user-posts');
-        dispatch(clearInputs());
-      }
+      )
+        .then(unwrapResult)
+        .then((response) => console.log(response))
+        .then(() => history.push('/user-posts', dispatch(clearInputs())))
+        .catch(() => setLoginError(true));
     }
   };
   const handleRegisterAccount = () => {
@@ -56,7 +65,19 @@ const LoginPage: React.FC = () => {
             Log in to your account
             <span>.</span>
           </h1>
-
+          {loading === 'pending' && (
+            <h1
+              style={{
+                color: '#00B960',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              LOGGING IN...
+              <HourglassEmptyIcon sx={{ fontSize: '3.0rem' }} />
+            </h1>
+          )}
           {/* FORM */}
           <form autoComplete="off" onSubmit={handleSubmit}>
             <div className={styles.usernameLoginInput}>
@@ -87,6 +108,8 @@ const LoginPage: React.FC = () => {
                 value={statePassword}
                 InputLabelProps={allInputLabelColors}
                 onChange={(e) => dispatch(getPassword(e.target.value))}
+                error={loginError}
+                helperText={loginError && loginErrorMessage}
                 required
                 style={{ borderBottom: '1px solid #fff', margin: '18px 0' }}
               />

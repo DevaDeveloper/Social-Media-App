@@ -105,5 +105,13 @@
   display: inline;
   max-width: 120px;
   cursor: pointer;
+  background: transparent;
+  -webkit-transition: ease 0.4s all;
+  transition: ease 0.4s all;
+  color: #00b960;
+}
+
+.registerHolder .logAcc button:hover {
+  color: #fff;
 }
 /*# sourceMappingURL=RegisterScreen.module.css.map */

@@ -8,6 +8,8 @@ interface InitialState {
   refreshToken: string;
   tokens: object;
   isLoggedIn: boolean;
+  loading: string;
+  errMessage: string;
 }
 const initialState: InitialState = {
   username: '',
@@ -16,6 +18,8 @@ const initialState: InitialState = {
   refreshToken: '',
   tokens: {},
   isLoggedIn: false,
+  loading: '',
+  errMessage: '',
 };
 export const userLoginAndTokens = createAsyncThunk(
   'login/userLoginAndTokens',
@@ -43,15 +47,27 @@ const loginSlice = createSlice({
       state.isLoggedIn = false;
       state.token = '';
       state.refreshToken = '';
-      localStorage.removeItem('userToken');
+      localStorage.removeItem('userJwt');
+      state.loading = '';
+      state.errMessage = '';
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(userLoginAndTokens.pending, (state) => {
+      state.isLoggedIn = false;
+      state.loading = 'pending';
+    });
     builder.addCase(userLoginAndTokens.fulfilled, (state, action) => {
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-      localStorage.setItem('userToken', JSON.stringify(state.refreshToken));
+      localStorage.setItem('userJwt', JSON.stringify(state.refreshToken));
       state.isLoggedIn = true;
+      state.loading = 'finished';
+    });
+    builder.addCase(userLoginAndTokens.rejected, (state, { error }) => {
+      state.errMessage = error.message;
+      state.isLoggedIn = false;
+      state.loading = 'rejected';
     });
   },
 });
