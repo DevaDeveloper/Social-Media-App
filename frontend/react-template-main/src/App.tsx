@@ -1,14 +1,33 @@
+import axios from 'axios';
 import React from 'react';
 // import { useTranslation } from 'react-i18next';
 import './App.css';
 import Routes from './routes/Routes';
+import { store } from './store/store';
+import { setErrorMessage } from './features/login/loginSlice';
+// import { useAppDispatch } from './store/hooks';
 
 function App() {
   // const { i18n, t } = useTranslation();
-
   // const changeLanguage = (test: string) => {
   //   i18n.changeLanguage(test).then(() => {});
   // };
+
+  const { dispatch } = store;
+
+  axios.interceptors.response.use(undefined, (error) => {
+    if (error.response.status === 400) {
+      dispatch(setErrorMessage('E-mail or password not valid!'));
+    } else if (error.response.status === 401) {
+      dispatch(setErrorMessage(error.response.data.message));
+    } else if (error.response.status === 403) {
+      // const dispatch = useAppDispatch();
+      console.log(error.response.data);
+      dispatch(
+        setErrorMessage('Sorry, your profile is blocked. Contact the admin'),
+      );
+    }
+  });
 
   return (
     <>

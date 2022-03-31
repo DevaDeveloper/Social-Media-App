@@ -90,7 +90,7 @@ const PostScreen: FC = () => {
                   borderBottom: '1px solid #fff',
                   width: '100%',
                   lineHeight: '24px',
-                  margin: '20px auto',
+                  margin: '10px auto',
                 }}
               />
 
@@ -108,7 +108,8 @@ const PostScreen: FC = () => {
                   borderBottom: '1px solid #fff',
                   width: '100%',
                   lineHeight: '24px',
-                  margin: '20px 0',
+
+                  margin: '10px 0',
                 }}
               />
 
@@ -126,7 +127,11 @@ const PostScreen: FC = () => {
                     // eslint-disable-next-line react/jsx-curly-newline
                   }
                   label="Accessibility"
-                  sx={{ width: '100%', color: '#000', margin: '20px 0' }}
+                  sx={{
+                    width: '100%',
+                    color: '#000',
+                    margin: '10px 0',
+                  }}
                 >
                   <MenuItem value="PASSENGER_VEHICLE">
                     By passenger car
@@ -147,7 +152,11 @@ const PostScreen: FC = () => {
                   value={newPostType}
                   onChange={(e) => dispatch(setPostType(e.target.value))}
                   label="Type"
-                  sx={{ width: '100%', color: '#000', margin: '20px 0' }}
+                  sx={{
+                    width: '100%',
+                    color: '#000',
+                    margin: '10px 0',
+                  }}
                 >
                   <MenuItem value="PICNIC">Excursion site</MenuItem>
                   <MenuItem value="WATERFALL">Waterfall</MenuItem>
@@ -167,9 +176,8 @@ const PostScreen: FC = () => {
                 onChange={(e) => dispatch(setPostDescription(e.target.value))}
                 sx={{
                   borderBottom: '1px solid #fff',
-                  lineHeight: '24px',
                   width: '100%',
-                  margin: '20px 0',
+                  margin: '10px 0',
                 }}
               />
 

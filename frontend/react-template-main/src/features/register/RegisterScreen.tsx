@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React, { FC, useState, useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
@@ -55,6 +56,7 @@ const RegisterScreen: FC = () => {
   const stateRole = useAppSelector((state) => state.register.role);
   const users = useAppSelector((state) => state.register.users);
   const { errMessage, loading } = useAppSelector((state) => state.register);
+  const [regex] = useState(/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{8,}$/);
 
   useEffect(() => {
     dispatch(clearForm());
@@ -71,7 +73,8 @@ const RegisterScreen: FC = () => {
     } else if (
       // eslint-disable-next-line operator-linebreak
       statePassword.trim().length < 8 ||
-      statePassword.trim().length > 20
+      statePassword.trim().length > 20 ||
+      regex.test(statePassword)
     ) {
       setPasswordError(true);
     } else if (stateEmail.includes('.') === false) {

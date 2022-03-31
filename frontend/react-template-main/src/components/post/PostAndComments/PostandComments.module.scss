@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   padding: 20px;
+  font-family: 'Poppins', sans-serif;
 
   .imgHolder {
     position: relative;
@@ -65,7 +66,7 @@
       button {
         position: absolute;
         top: 72%;
-        left: 72%;
+        left: 76%;
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;

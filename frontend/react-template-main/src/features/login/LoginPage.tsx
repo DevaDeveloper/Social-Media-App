@@ -1,10 +1,17 @@
+/* eslint-disable no-console */
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-confusing-arrow */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import { InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import styles from './LoginPage.module.scss';
 import Logo from '../../assets/logo.png';
+import LoginModal from '../../components/loginModal/LoginModal';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   getPassword,
@@ -24,14 +31,28 @@ const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const stateUsername = useAppSelector((state) => state.login.username);
   const statePassword = useAppSelector((state) => state.login.password);
-  const loading = useAppSelector((state) => state.login.loading);
-
+  const { loading, currentUser, errMessage } = useAppSelector(
+    (state) => state.login,
+  );
   // const errorMessage = useAppSelector((state) => state.login.errMessage);
 
   const [loginError, setLoginError] = useState<boolean>(false);
   const [loginErrorMessage] = useState<string>(
     'Password or username is not valid!',
   );
+  const [modal, setModal] = useState<boolean>(false);
+  const [visiblePassword, setVisiblePassword] = useState(false);
+
+  if (modal) {
+    console.log(errMessage);
+  }
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
+  const handleShowPassword = () => {
+    setVisiblePassword(!visiblePassword);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +66,14 @@ const LoginPage: React.FC = () => {
         }),
       )
         .then(unwrapResult)
-        .then((response) => console.log(response))
-        .then(() => history.push('/user-posts', dispatch(clearInputs())))
-        .catch(() => setLoginError(true));
+        .then(() => {
+          console.log(currentUser.userType);
+          history.push('/user-posts');
+          dispatch(clearInputs());
+        })
+        .catch(() => {
+          setModal(true);
+        });
     }
   };
   const handleRegisterAccount = () => {
@@ -56,6 +82,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={styles.loginHolder}>
+      {modal && (
+        <LoginModal text={errMessage} handleCloseModal={handleCloseModal} />
+      )}
       <div className={styles.logHolder}>
         <div className={styles.loginLogoImg}>
           <img src={Logo} alt="LogoImg" />
@@ -102,22 +131,49 @@ const LoginPage: React.FC = () => {
               <TextField
                 placeholder="Password"
                 id="password_input"
-                type="password"
+                type={visiblePassword ? 'text' : 'password'}
                 label="Password"
                 variant="standard"
                 value={statePassword}
                 InputLabelProps={allInputLabelColors}
                 onChange={(e) => dispatch(getPassword(e.target.value))}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      position="end"
+                      sx={{ backgroundColor: 'transparent' }}
+                    >
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleShowPassword}
+                        sx={{
+                          width: '5px',
+                          color: '#fff',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontSize: '16px',
+                          margin: '10px 0',
+                          transition: 'ease 0.4s all',
+                        }}
+                      >
+                        {visiblePassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 error={loginError}
                 helperText={loginError && loginErrorMessage}
                 required
-                style={{ borderBottom: '1px solid #fff', margin: '18px 0' }}
+                sx={{ borderBottom: '1px solid #fff', margin: '18px 0' }}
               />
             </div>
             <div className={styles.forgotPass}>
               <p>Forgot password?</p>
             </div>
-            <button type="submit">Log in</button>
+            <button type="submit" className={styles.loginBtn}>
+              Log in
+            </button>
             <hr style={{ width: '100%' }} />
             <div className={styles.registerAcc}>
               <p>

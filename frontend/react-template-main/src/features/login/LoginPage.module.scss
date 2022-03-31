@@ -5,6 +5,17 @@
   background-position: center;
   padding: 0 80px;
   height: 100vh;
+
+  .passwordLoginInput {
+    button {
+      background: transparent;
+      transform: translateX(100px);
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
   .loginLogoImg {
     padding-top: 30px;
   }

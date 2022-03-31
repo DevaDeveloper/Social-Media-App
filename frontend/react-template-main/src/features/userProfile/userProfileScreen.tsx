@@ -11,6 +11,7 @@ import styles from './userProfile.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchAllPosts } from '../home/homeScreenSlice';
 import Post from '../../components/post/Post';
+
 // import Post from '../../components/post/Post';
 
 const UserProfileScreen: FC = () => {

@@ -40,6 +40,10 @@ pathComponentArray.push({ path: NEW_POST, component: NewPostPage });
 pathComponentArray.push({ path: USER_PROFILE, component: UserProfilePage });
 pathComponentArray.push({ path: POST_ID, component: PostPageId });
 pathComponentArray.push({ path: ADMIN, component: AdminScreen });
+pathComponentArray.push({
+  path: '/user-profile/:userId',
+  component: UserProfilePage,
+});
 
 pathComponentArray.push({ component: NotFoundPage });
 

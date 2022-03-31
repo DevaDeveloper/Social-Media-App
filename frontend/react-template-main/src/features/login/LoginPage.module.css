@@ -7,6 +7,16 @@
   height: 100vh;
 }
 
+.loginHolder .passwordLoginInput button {
+  background: transparent;
+  -webkit-transform: translateX(100px);
+          transform: translateX(100px);
+}
+
+.loginHolder .passwordLoginInput button:hover {
+  background: transparent;
+}
+
 .loginHolder .loginLogoImg {
   padding-top: 30px;
 }

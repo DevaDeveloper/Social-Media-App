@@ -58,6 +58,7 @@ export const fetchOnePost = createAsyncThunk(
     getPostId(data.token, data.postId),
 );
 
+// POST LIKE
 export const postLike = createAsyncThunk(
   'homescreen/postLike',
   async (data: { obj: {}; token: string }) =>

@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 import QueryString from 'qs';
 import axios, { AxiosStatic } from 'axios';
 import * as qs from './qs';

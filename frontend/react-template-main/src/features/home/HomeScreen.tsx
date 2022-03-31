@@ -1,26 +1,38 @@
 import React, { FC, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import Navbar from './Navbar';
 import Post from '../../components/post/Post';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchAllPosts } from './homeScreenSlice';
+import styles from './HomeScreen.module.scss';
+// import useAuth from '../../routes/useAuth';
 
 const HomeScreen: FC = () => {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
   const userPosts = useAppSelector((state) => state.userPosts.postsList);
   const status = useAppSelector((state) => state.userPosts.status);
-  const token = useAppSelector((state) => state.login.token);
-  const dispatch = useAppDispatch();
-
+  const { token, currentUser } = useAppSelector((state) => state.login);
+  const { userType } = currentUser;
+  // useAuth();
   useEffect(() => {
     const fetchAll = async () => {
       await dispatch(fetchAllPosts(token));
     };
 
-    fetchAll();
+    if (userType === 'ADMIN') {
+      history.push('/admin');
+    } else if (!token) {
+      history.push('/login');
+    } else {
+      fetchAll();
+    }
   }, []);
 
   return (
-    <div>
+    <div className={styles.homeScreenHolder}>
       <Navbar />
       {status === 'pending' && (
         <h1

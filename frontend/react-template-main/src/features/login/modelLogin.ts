@@ -6,5 +6,15 @@ interface TokenModel {
   accessToken: string;
   refreshToken: string;
 }
-export type { LoginModel, TokenModel };
+
+interface CurrentUser {
+  id: string;
+  email: string;
+  exp: number;
+  iat: number;
+  type: string;
+  userType: string;
+}
+
+export type { LoginModel, TokenModel, CurrentUser };
 export default {};

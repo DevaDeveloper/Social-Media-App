@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { FC, useEffect, useState } from 'react';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDown';
@@ -14,9 +15,15 @@ import {
 } from '../../../features/home/homeScreenSlice';
 import { getCommentWithId, postNewComment } from './PostAndCommentsSlice';
 
+const allInputLabelColors = {
+  style: { color: '#000' },
+};
+
 const PostAndComments: FC = () => {
   const [countLikes, setCountLikes] = useState(0);
   const [commentText, setCommentText] = useState<string>('');
+  const [showComments, setShowComments] = useState(false);
+  const [userReacted, setUserReacted] = useState(false);
   const token = useAppSelector((state) => state.login.token);
   const { postWithId } = useAppSelector((state) => state.userPosts);
   const dispatch = useAppDispatch();
@@ -35,6 +42,9 @@ const PostAndComments: FC = () => {
   const commentInput = (e) => {
     setCommentText(e.target.value);
   };
+  const handleShowComments = () => {
+    setShowComments(!showComments);
+  };
 
   useEffect(() => {
     fetch('http://localhost:5000/comment', {
@@ -44,7 +54,7 @@ const PostAndComments: FC = () => {
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
 
-    //  get /like /post /{id} testing
+    //  get /like /post /{id} working
     const fetchLike = async () => {
       const response = await dispatch(
         getLikeWithId({
@@ -52,6 +62,7 @@ const PostAndComments: FC = () => {
           token,
         }),
       );
+      console.log(response.payload);
       setCountLikes(response.payload.count);
     };
     const getComments = async () => {
@@ -61,7 +72,7 @@ const PostAndComments: FC = () => {
     console.log(id);
     getComments();
     fetchLike();
-  }, [countLikes]);
+  }, [userReacted, countLikes]);
 
   const postCommentText = async () => {
     try {
@@ -75,11 +86,25 @@ const PostAndComments: FC = () => {
 
   // post like
   const handlePostLike = async () => {
-    await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
+    setUserReacted(!userReacted);
+    console.log(userReacted);
+    try {
+      await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
+    } catch (error) {
+      console.log(error);
+    }
   };
   // post dislike
   const handlePostDislike = async () => {
-    await dispatch(postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }));
+    setUserReacted(!userReacted);
+    console.log(userReacted);
+    try {
+      await dispatch(
+        postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -133,7 +158,7 @@ const PostAndComments: FC = () => {
                   cursor: 'pointer',
                 }}
               >
-                <ChatBubbleIcon />
+                <ChatBubbleIcon onClick={() => handleShowComments()} />
                 {/* {comments} */}
                 60
               </span>
@@ -154,17 +179,26 @@ const PostAndComments: FC = () => {
             <h5 style={{ margin: '20px 0' }}>{description}</h5>
             <div className={styles.commentInteractions}>
               <span>
-                <ThumbUpOffAltIcon />
+                <ThumbUpOffAltIcon
+                  onClick={() => handlePostLike()}
+                  sx={{ cursor: 'pointer' }}
+                />
                 {/* {upvotes} */}
                 {countLikes}
               </span>
               <span>
-                <ThumbDownOffAltIcon />
+                <ThumbDownOffAltIcon
+                  onClick={() => handlePostDislike()}
+                  sx={{ cursor: 'pointer' }}
+                />
                 {/* {downvotes} */}
                 10
               </span>
               <span>
-                <ChatBubbleIcon />
+                <ChatBubbleIcon
+                  onClick={() => handleShowComments()}
+                  sx={{ cursor: 'pointer' }}
+                />
                 {/* {comments} */}
                 60
               </span>
@@ -173,71 +207,85 @@ const PostAndComments: FC = () => {
 
           <div className={styles.publishComment}>
             <img src={AvatarImg} alt="comment" />
-            <TextField
-              multiline
-              rows={7}
-              id="outlined-basic"
-              variant="outlined"
-              placeholder="           Write a comment..."
-              onChange={commentInput}
-              sx={{
+            <div
+              style={{
                 minWidth: '374px',
-                boxSizing: 'border-box',
                 borderRadius: '16px',
+                border: '1px solid #EAEAF5',
+                boxSizing: 'border-box',
+                display: 'flex',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <TextField
+                multiline
+                rows={7}
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Write a comment..."
+                onChange={commentInput}
+                inputProps={allInputLabelColors}
+                sx={{
+                  maxWidth: '354px',
+                  boxSizing: 'border-box',
+                  borderRadius: '16px',
+                }}
+              />
+            </div>
             <button type="button" onClick={() => postCommentText()}>
               Publish
             </button>
           </div>
 
-          <div className={styles.publishedComments}>
-            {/* TODO - MAKE COMPONENT FOR EACH COMMENT */}
-            <div className={styles.oneComment}>
-              <article>
-                <img src={AvatarImg} alt="avatar" />
-                <div>
-                  <h4>@john.brown12</h4>
-                  <span>02/03/2022</span>
-                </div>
-              </article>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Aliquid, ad.
-              </p>
-              <hr />
-            </div>
+          {showComments && (
+            <div className={styles.publishedComments}>
+              {/* TODO - MAKE COMPONENT FOR EACH COMMENT */}
+              <div className={styles.oneComment}>
+                <article>
+                  <img src={AvatarImg} alt="avatar" />
+                  <div>
+                    <h4>@john.brown12</h4>
+                    <span>02/03/2022</span>
+                  </div>
+                </article>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aliquid, ad.
+                </p>
+                <hr />
+              </div>
 
-            <div className={styles.oneComment}>
-              <article>
-                <img src={AvatarImg} alt="avatar" />
-                <div>
-                  <h4>@john.brown12</h4>
-                  <span>02/03/2022</span>
-                </div>
-              </article>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Aliquid, ad.
-              </p>
-              <hr />
-            </div>
+              <div className={styles.oneComment}>
+                <article>
+                  <img src={AvatarImg} alt="avatar" />
+                  <div>
+                    <h4>@john.brown12</h4>
+                    <span>02/03/2022</span>
+                  </div>
+                </article>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aliquid, ad.
+                </p>
+                <hr />
+              </div>
 
-            <div className={styles.oneComment}>
-              <article>
-                <img src={AvatarImg} alt="avatar" />
-                <div>
-                  <h4>@john.brown12</h4>
-                  <span>02/03/2022</span>
-                </div>
-              </article>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Aliquid, ad.
-              </p>
-              <hr />
+              <div className={styles.oneComment}>
+                <article>
+                  <img src={AvatarImg} alt="avatar" />
+                  <div>
+                    <h4>@john.brown12</h4>
+                    <span>02/03/2022</span>
+                  </div>
+                </article>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aliquid, ad.
+                </p>
+                <hr />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

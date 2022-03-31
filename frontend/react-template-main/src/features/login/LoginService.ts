@@ -10,6 +10,7 @@ const loginUser = async (data = {}, query = {}) => {
   // @ts-ignore
   const path = baseService.url.build('/auth/signin');
   const url = BaseService.combine(path, queryString);
+
   const response: AxiosResponse<TokenModel> = await baseService.post(
     url,
     data,

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
@@ -25,6 +26,7 @@ import Navbar from '../home/Navbar';
 import styles from './AdminScreem.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { blockUserId, getAllUsers } from './AdminSlice';
+import { logoutUser } from '../login/loginSlice';
 
 const adminStyles = {
   fontSize: '18px',
@@ -35,9 +37,11 @@ const adminStyles = {
 const AdminScreen: FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state) => state.login.currentUser);
   const token = useAppSelector((state) => state.login.token);
   const users = useAppSelector((state) => state.admin.usersArr);
   const [filterUsers, setFilterUsers] = useState('');
+  const [blockAction, setBlockAction] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -65,9 +69,13 @@ const AdminScreen: FC = () => {
       }
     };
 
-    console.log('Testing');
-    fetchUsers();
-  }, [filterUsers, users.length, dispatch]);
+    if (!token) {
+      dispatch(logoutUser);
+      history.push('/login');
+    } else {
+      fetchUsers();
+    }
+  }, [blockAction, filterUsers, users.length, dispatch]);
 
   const handleFilterUsers = (event) => {
     setFilterUsers(event.target.value);
@@ -155,7 +163,7 @@ const AdminScreen: FC = () => {
                       {user.username}
                     </TableCell>
                     <TableCell align="right" sx={adminStyles}>
-                      {user.username}
+                      @{user.username}
                     </TableCell>
                     <TableCell align="right" sx={adminStyles}>
                       {user.email}
@@ -178,7 +186,9 @@ const AdminScreen: FC = () => {
                             // eslint-disable-next-line implicit-arrow-linebreak
                             dispatch(
                               blockUserId({ obj: {}, token, idUser: user.id }),
-                            ).then(() => history.push('/admin'))
+                            )
+                              .then(() => setBlockAction(!blockAction))
+                              .catch((error) => console.log(error))
                           }
                         >
                           <BlockIcon />
