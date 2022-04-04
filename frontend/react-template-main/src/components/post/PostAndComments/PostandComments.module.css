@@ -91,6 +91,7 @@
 .pageHolder .commentsHolder .publishComment img {
   position: absolute;
   top: 1px;
+  margin: 10px 10px;
 }
 
 .pageHolder .commentsHolder .publishComment button {

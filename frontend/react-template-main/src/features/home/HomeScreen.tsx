@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import Navbar from './Navbar';
+import Navbar from '../../components/navbar/Navbar';
 import Post from '../../components/post/Post';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchAllPosts } from './homeScreenSlice';
@@ -9,6 +9,7 @@ import styles from './HomeScreen.module.scss';
 // import useAuth from '../../routes/useAuth';
 
 const HomeScreen: FC = () => {
+  // useAuth();
   const dispatch = useAppDispatch();
   const history = useHistory();
 

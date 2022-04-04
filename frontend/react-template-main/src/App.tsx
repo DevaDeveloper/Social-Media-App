@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 import React from 'react';
 // import { useTranslation } from 'react-i18next';
@@ -26,6 +27,8 @@ function App() {
       dispatch(
         setErrorMessage('Sorry, your profile is blocked. Contact the admin'),
       );
+    } else if (error.response.status === 500) {
+      console.error(error.response.data.message);
     }
   });
 

@@ -54,7 +54,7 @@ const RegisterScreen: FC = () => {
     (state) => state.register.confirmPassword,
   );
   const stateRole = useAppSelector((state) => state.register.role);
-  const users = useAppSelector((state) => state.register.users);
+  // const users = useAppSelector((state) => state.register.users);
   const { errMessage, loading } = useAppSelector((state) => state.register);
   const [regex] = useState(/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{8,}$/);
 
@@ -101,7 +101,7 @@ const RegisterScreen: FC = () => {
   const handleHasAccountLogin = () => {
     history.push('/login');
   };
-  console.log(users);
+
   return (
     <div className={styles.registerHolder}>
       <div className={styles.loginLogoImg}>

@@ -22,7 +22,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import BlockIcon from '@mui/icons-material/Block';
-import Navbar from '../home/Navbar';
+import Navbar from '../../components/navbar/Navbar';
 import styles from './AdminScreem.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { blockUserId, getAllUsers } from './AdminSlice';

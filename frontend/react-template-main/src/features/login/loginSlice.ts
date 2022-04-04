@@ -102,10 +102,8 @@ const loginSlice = createSlice({
       localStorage.setItem('userJwt', JSON.stringify(state.refreshToken));
       state.isLoggedIn = true;
       state.loading = 'finished';
-      console.log(state.currentUser);
     });
     builder.addCase(userLoginAndTokens.rejected, (state) => {
-      console.log(state.errMessage);
       state.isLoggedIn = false;
       state.loading = 'rejected';
     });

@@ -8,6 +8,7 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.login.token);
   const refreshToken = localStorage.getItem('jwtToken');
+  console.log(refreshToken);
 
   const handleTokenUsage = () => {
     if (!token) {

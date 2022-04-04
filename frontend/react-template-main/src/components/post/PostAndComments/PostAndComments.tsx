@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 import React, { FC, useEffect, useState } from 'react';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDown';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { TextField } from '@mui/material';
-import Navbar from '../../../features/home/Navbar';
+import Navbar from '../../navbar/Navbar';
 import styles from './PostandComments.module.scss';
 import ForestImg from '../../../assets/forestpost.png';
 import AvatarImg from '../../../assets/avatar1.png';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import OneComment from './OneComment';
 import {
   getLikeWithId,
   postLike,
@@ -18,6 +19,39 @@ import { getCommentWithId, postNewComment } from './PostAndCommentsSlice';
 const allInputLabelColors = {
   style: { color: '#000' },
 };
+
+const comments = [
+  {
+    img: AvatarImg,
+    text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, ad.',
+    date: '24/03/2022',
+    username: '@john.brown12',
+    id: '1',
+  },
+  {
+    img: AvatarImg,
+    text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, ad.',
+    date: '29/03/2022',
+    username: '@lela.test',
+    id: '2',
+  },
+  {
+    img: AvatarImg,
+    text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, ad.',
+    date: '30/03/2022',
+    username: '@nemanja.12',
+    id: '3',
+  },
+  {
+    img: AvatarImg,
+    text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, ad.',
+    date: '30/03/2022',
+    username: '@lela.16',
+    id: '4',
+  },
+];
+
+// TODO Make more smaller components
 
 const PostAndComments: FC = () => {
   const [countLikes, setCountLikes] = useState(0);
@@ -47,13 +81,6 @@ const PostAndComments: FC = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/comment', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-
     //  get /like /post /{id} working
     const fetchLike = async () => {
       const response = await dispatch(
@@ -62,14 +89,11 @@ const PostAndComments: FC = () => {
           token,
         }),
       );
-      console.log(response.payload);
       setCountLikes(response.payload.count);
     };
     const getComments = async () => {
-      const response = await dispatch(getCommentWithId({ postId: id, token }));
-      console.log(response);
+      await dispatch(getCommentWithId({ postId: id, token }));
     };
-    console.log(id);
     getComments();
     fetchLike();
   }, [userReacted, countLikes]);
@@ -87,24 +111,12 @@ const PostAndComments: FC = () => {
   // post like
   const handlePostLike = async () => {
     setUserReacted(!userReacted);
-    console.log(userReacted);
-    try {
-      await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
-    } catch (error) {
-      console.log(error);
-    }
+    await dispatch(postLike({ obj: { type: 'UPVOTE', idPost: id }, token }));
   };
   // post dislike
   const handlePostDislike = async () => {
     setUserReacted(!userReacted);
-    console.log(userReacted);
-    try {
-      await dispatch(
-        postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }),
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await dispatch(postLike({ obj: { type: 'DOWNVOTE', idPost: id }, token }));
   };
 
   return (
@@ -158,7 +170,7 @@ const PostAndComments: FC = () => {
                   cursor: 'pointer',
                 }}
               >
-                <ChatBubbleIcon onClick={() => handleShowComments()} />
+                <ChatBubbleOutlineIcon onClick={() => handleShowComments()} />
                 {/* {comments} */}
                 60
               </span>
@@ -195,7 +207,7 @@ const PostAndComments: FC = () => {
                 10
               </span>
               <span>
-                <ChatBubbleIcon
+                <ChatBubbleOutlineIcon
                   onClick={() => handleShowComments()}
                   sx={{ cursor: 'pointer' }}
                 />
@@ -205,6 +217,7 @@ const PostAndComments: FC = () => {
             </div>
           </div>
 
+          {/* TODO Make more smaller components */}
           <div className={styles.publishComment}>
             <img src={AvatarImg} alt="comment" />
             <div
@@ -240,50 +253,17 @@ const PostAndComments: FC = () => {
           {showComments && (
             <div className={styles.publishedComments}>
               {/* TODO - MAKE COMPONENT FOR EACH COMMENT */}
-              <div className={styles.oneComment}>
-                <article>
-                  <img src={AvatarImg} alt="avatar" />
-                  <div>
-                    <h4>@john.brown12</h4>
-                    <span>02/03/2022</span>
-                  </div>
-                </article>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aliquid, ad.
-                </p>
-                <hr />
-              </div>
 
-              <div className={styles.oneComment}>
-                <article>
-                  <img src={AvatarImg} alt="avatar" />
-                  <div>
-                    <h4>@john.brown12</h4>
-                    <span>02/03/2022</span>
-                  </div>
-                </article>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aliquid, ad.
-                </p>
-                <hr />
-              </div>
-
-              <div className={styles.oneComment}>
-                <article>
-                  <img src={AvatarImg} alt="avatar" />
-                  <div>
-                    <h4>@john.brown12</h4>
-                    <span>02/03/2022</span>
-                  </div>
-                </article>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aliquid, ad.
-                </p>
-                <hr />
-              </div>
+              {comments.map((comment) => (
+                <OneComment
+                  text={comment.text}
+                  date={comment.date}
+                  username={comment.username}
+                  key={comment.id}
+                  img={comment.img}
+                  // commentId={comment.id}
+                />
+              ))}
             </div>
           )}
         </div>

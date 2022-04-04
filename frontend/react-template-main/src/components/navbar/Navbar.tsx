@@ -6,8 +6,8 @@ import LOGO from '../../assets/logo.png';
 import styles from './Navbar.module.scss';
 import { useAppDispatch } from '../../store/hooks';
 // import { logoutUser } from '../login/loginSlice';
-import Modal from '../../components/modal/Modal';
-import { logoutUser } from '../login/loginSlice';
+import Modal from '../modal/Modal';
+import { logoutUser } from '../../features/login/loginSlice';
 
 const Navbar: FC = () => {
   const [modal, setModal] = useState(false);

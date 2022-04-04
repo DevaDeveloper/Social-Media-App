@@ -19,7 +19,7 @@ import {
 } from './newPostSlice';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import Navbar from '../home/Navbar';
+import Navbar from '../../components/navbar/Navbar';
 import AddPostPng from '../../assets/newPost.png';
 import styles from './PostScreen.module.scss';
 

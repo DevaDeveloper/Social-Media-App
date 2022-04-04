@@ -4,15 +4,13 @@ import { Typography } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import BadgeIcon from '@mui/icons-material/Badge';
 import TodayIcon from '@mui/icons-material/Today';
-import Navbar from '../home/Navbar';
+import Navbar from '../../components/navbar/Navbar';
 import CoverImg from '../../assets/ProfileCover.png';
 import ProfileImg from '../../assets/avatar1.png';
 import styles from './userProfile.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchAllPosts } from '../home/homeScreenSlice';
 import Post from '../../components/post/Post';
-
-// import Post from '../../components/post/Post';
 
 const UserProfileScreen: FC = () => {
   const token = useAppSelector((state) => state.login.token);
